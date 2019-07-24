@@ -8,9 +8,11 @@ namespace COMP123_S2019_Lesson11B
 {
     public static class Program
     {
+        public static Student student;
         public static StartForm startForm;
         public static MainForm mainForm;
         public static AboutForm aboutBox;
+        public static StudentInfoForm studentInfoForm;
         
         /// <summary>
         /// The main entry point for the application.
@@ -21,9 +23,12 @@ namespace COMP123_S2019_Lesson11B
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            student = new Student();
+
             startForm = new StartForm();
             mainForm = new MainForm();
             aboutBox = new AboutForm();
+            studentInfoForm = new StudentInfoForm();
 
             Application.Run(new StartForm());
         }

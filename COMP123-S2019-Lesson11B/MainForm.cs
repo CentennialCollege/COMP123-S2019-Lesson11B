@@ -97,11 +97,7 @@ namespace COMP123_S2019_Lesson11B
 
                 MessageBox.Show("File Saved", "Saving...",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-           
-
-               
+            }               
         }
 
         private void StudentTableDataGridView_SelectionChanged(object sender, EventArgs e)
@@ -126,6 +122,44 @@ namespace COMP123_S2019_Lesson11B
             Program.student.StudentID = cells[(int)StudentField.STUDENT_ID].Value.ToString();
             Program.student.FirstName = cells[(int)StudentField.FIRST_NAME].Value.ToString();
             Program.student.LastName = cells[(int)StudentField.LAST_NAME].Value.ToString();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // configure the file dialog
+            StudentOpenFileDialog.FileName = "Student.txt";
+            StudentOpenFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            StudentOpenFileDialog.Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*";
+
+            // open the file dialog
+            var result = StudentOpenFileDialog.ShowDialog();
+            if(result != DialogResult.Cancel)
+            {
+                try
+                {
+                    // Open your stream to read
+                    using (StreamReader inputStream = new StreamReader(
+                        File.Open(StudentOpenFileDialog.FileName, FileMode.Open)))
+                    {
+                        // Read stuff into the Student class
+                        Program.student.id = int.Parse(inputStream.ReadLine());
+                        Program.student.StudentID = inputStream.ReadLine();
+                        Program.student.FirstName = inputStream.ReadLine();
+                        Program.student.LastName = inputStream.ReadLine();
+
+                        // cleanup
+                        inputStream.Close();
+                        inputStream.Dispose();
+
+                        NextButton_Click(sender, e);
+                    }
+                }
+                catch (IOException exception)
+                {
+                    MessageBox.Show("Error: " + exception.Message, "File I/O Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

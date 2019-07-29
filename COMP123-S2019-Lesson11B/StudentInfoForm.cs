@@ -20,36 +20,11 @@ namespace COMP123_S2019_Lesson11B
 
         private void StudentInfoForm_Activated(object sender, EventArgs e)
         {
-            try
-            {
-                // Open your stream to read
-                using (StreamReader inputStream = new StreamReader(
-                    File.Open("Student.txt", FileMode.Open)))
-                {
-                    // Read stuff into the Student class
-                    Program.student.id = int.Parse(inputStream.ReadLine());
-                    Program.student.StudentID = inputStream.ReadLine();
-                    Program.student.FirstName = inputStream.ReadLine();
-                    Program.student.LastName = inputStream.ReadLine();
-
-                    // cleanup
-                    inputStream.Close();
-                    inputStream.Dispose();
-
-                    // write data from student object to form labels
-                    IDDataLabel.Text = Program.student.id.ToString();
-                    StudentIDDataLabel.Text = Program.student.StudentID;
-                    FirstNameDataLabel.Text = Program.student.FirstName;
-                    LastNameDataLabel.Text = Program.student.LastName;
-
-                }
-            }
-            catch (IOException exception)
-            {
-
-                MessageBox.Show("Error: " + exception.Message, "File I/O Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            // write data from student object to form labels
+            IDDataLabel.Text = Program.student.id.ToString();
+            StudentIDDataLabel.Text = Program.student.StudentID;
+            FirstNameDataLabel.Text = Program.student.FirstName;
+            LastNameDataLabel.Text = Program.student.LastName;
         }
 
         private void BackButton_Click(object sender, EventArgs e)

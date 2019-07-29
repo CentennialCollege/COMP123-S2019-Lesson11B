@@ -161,5 +161,75 @@ namespace COMP123_S2019_Lesson11B
                 }
             }
         }
+
+        private void saveBinaryFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // configure the file dialog
+            StudentSaveFileDialog.FileName = "Student.dat";
+            StudentSaveFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            StudentSaveFileDialog.Filter = "Binary Files (*.dat)|*.dat| All Files (*.*)|*.*";
+
+            // open file dialog - Modal Form
+            var result = StudentSaveFileDialog.ShowDialog();
+            if (result != DialogResult.Cancel)
+            {
+                // open file to write
+                using (BinaryWriter outputStream = new BinaryWriter(
+                    File.Open(StudentSaveFileDialog.FileName, FileMode.Create)))
+                {
+                    // write stuff to the file
+                    outputStream.Write(Program.student.id.ToString());
+                    outputStream.Write(Program.student.StudentID);
+                    outputStream.Write(Program.student.FirstName);
+                    outputStream.Write(Program.student.LastName);
+
+                    // cleanup
+                    outputStream.Flush();
+                    outputStream.Close();
+                    outputStream.Dispose();
+                }
+
+                MessageBox.Show("Binary File Saved", "Saving Binary File...",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void openBinaryFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // configure the file dialog
+            StudentOpenFileDialog.FileName = "Student.dat";
+            StudentOpenFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            StudentOpenFileDialog.Filter = "Binary Files (*.dat)|*.dat| All Files (*.*)|*.*";
+
+            // open the file dialog
+            var result = StudentOpenFileDialog.ShowDialog();
+            if (result != DialogResult.Cancel)
+            {
+                try
+                {
+                    // Open your stream to read
+                    using (BinaryReader inputStream = new BinaryReader(
+                        File.Open(StudentOpenFileDialog.FileName, FileMode.Open)))
+                    {
+                        // Read stuff into the Student class
+                        Program.student.id = int.Parse(inputStream.ReadString());
+                        Program.student.StudentID = inputStream.ReadString();
+                        Program.student.FirstName = inputStream.ReadString();
+                        Program.student.LastName = inputStream.ReadString();
+
+                        // cleanup
+                        inputStream.Close();
+                        inputStream.Dispose();
+
+                        NextButton_Click(sender, e);
+                    }
+                }
+                catch (IOException exception)
+                {
+                    MessageBox.Show("Error: " + exception.Message, "File I/O Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }

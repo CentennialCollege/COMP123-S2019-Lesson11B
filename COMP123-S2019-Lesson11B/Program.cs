@@ -30,7 +30,7 @@ namespace COMP123_S2019_Lesson11B
             aboutBox = new AboutForm();
             studentInfoForm = new StudentInfoForm();
 
-            Application.Run(new StartForm());
+            Application.Run(startForm);
         }
     }
 }

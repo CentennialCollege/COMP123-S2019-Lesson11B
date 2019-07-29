@@ -69,25 +69,37 @@ namespace COMP123_S2019_Lesson11B
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // open file to write
-            using (StreamWriter outputStream = new StreamWriter(
-                File.Open("Student.txt", FileMode.Create)))
+            // configure the file dialog
+            StudentSaveFileDialog.FileName = "Student.txt";
+            StudentSaveFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            StudentSaveFileDialog.Filter = "Text Files (*.txt)|*.txt| All Files (*.*)|*.*";
+
+            // open file dialog - Modal Form
+            var result = StudentSaveFileDialog.ShowDialog();
+            if(result != DialogResult.Cancel)
             {
-                // write stuff to the file
-                outputStream.WriteLine(Program.student.id);
-                outputStream.WriteLine(Program.student.StudentID);
-                outputStream.WriteLine(Program.student.FirstName);
-                outputStream.WriteLine(Program.student.LastName);
+                // open file to write
+                using (StreamWriter outputStream = new StreamWriter(
+                    File.Open(StudentSaveFileDialog.FileName, FileMode.Create)))
+                {
+                    // write stuff to the file
+                    outputStream.WriteLine(Program.student.id);
+                    outputStream.WriteLine(Program.student.StudentID);
+                    outputStream.WriteLine(Program.student.FirstName);
+                    outputStream.WriteLine(Program.student.LastName);
 
-                // close the file
-                outputStream.Close();
+                    // close the file
+                    outputStream.Close();
 
-                // dispose of the memory
-                outputStream.Dispose();
+                    // dispose of the memory
+                    outputStream.Dispose();
+                }
+
+                MessageBox.Show("File Saved", "Saving...",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
-            MessageBox.Show("File Saved", "Saving...", 
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+           
 
                
         }
